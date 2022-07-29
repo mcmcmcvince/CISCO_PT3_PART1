@@ -1,0 +1,114 @@
+SW-3
+SW-3#ena
+SW-3#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-3(config)#int vlan 99
+SW-3(config-if)#ip add 10.0.99.18 255.255.255.240
+SW-3(config-if)#no shut
+SW-3(config-if)#exit
+SW-3(config)#ip default-gateway 10.0.99.17
+SW-3#ena
+SW-3#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-3(config)#ip domain-name acad.pt
+SW-3(config)#crypto key generate rsa
+The name for the keys will be: SW-3.acad.pt
+SW-3(config)#username admin privilege 15 secret C1sco123!
+*Mar 1 13:23:2.566: %SSH-5-ENABLED: SSH 1.99 has been enabled
+SW-3(config)#enable secret C1sco123!
+SW-3(config)#
+SW-3(config)#line vty 0 15
+SW-3(config-line)#transport input ssh
+SW-3(config-line)#login local
+SW-3(config-line)#exit
+SW-3(config)#ssh version 2
+              ^
+% Invalid input detected at '^' marker.
+	
+SW-3(config)#ip ssh version 2
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-3(config)#vlan 40
+SW-3(config-vlan)#name FAC
+SW-3(config-vlan)#interface vlan 40
+SW-3(config-if)#
+%LINK-5-CHANGED: Interface Vlan40, changed state to up
+
+SW-3(config-if)#ip address 10.0.40.1 255.255.255.0
+SW-3(config-if)#description FAC
+SW-3(config-if)#exit
+SW-3(config)#
+SW-3(config)#vlan 50
+SW-3(config-vlan)#name FAB1
+SW-3(config-vlan)#interface vlan 50
+SW-3(config-if)#
+%LINK-5-CHANGED: Interface Vlan50, changed state to up
+
+SW-3(config-if)#ip address 10.0.50.1 255.255.255.0
+SW-3(config-if)#description FAB1
+SW-3(config-if)#exit
+SW-3(config)#
+SW-3(config)#vlan 60
+SW-3(config-vlan)#name FAB2
+SW-3(config-vlan)#interface vlan 60
+SW-3(config-if)#
+%LINK-5-CHANGED: Interface Vlan60, changed state to up
+
+SW-3(config-if)#ip address 10.0.60.1 255.255.255.0
+SW-3(config-if)#description FAB2
+SW-3(config-if)#
+SW-3(config-if)#exit
+SW-3(config)#
+SW-3(config)#vlan 99
+SW-3(config-vlan)#
+%LINK-5-CHANGED: Interface Vlan99, changed state to up
+
+SW-3(config-vlan)#name ADMIN
+SW-3(config-vlan)#interface vlan 99
+SW-3(config-if)#ip address 10.0.60.18 255.255.255.240
+SW-3(config-if)#description ADMIN
+SW-3(config-if)#exit
+SW-3(config)#
+
+SW-3(config)#interface range f0/1-5
+SW-3(config-if-range)#switchport mode access
+SW-3(config-if-range)#switchport access vlan 40
+SW-3(config-if-range)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan40, changed state to up
+
+SW-3(config-if-range)#exit
+SW-3(config)#
+SW-3(config)#interface range f0/6-10
+SW-3(config-if-range)#switchport mode access
+SW-3(config-if-range)#switchport access vlan 50
+SW-3(config-if-range)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan50, changed state to up
+
+SW-3(config-if-range)#exit
+SW-3(config)#
+SW-3(config)#interface range f0/11-15
+SW-3(config-if-range)#switchport mode access
+SW-3(config-if-range)#switchport access vlan 60
+SW-3(config-if-range)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan60, changed state to up
+
+SW-3(config-if-range)#exit
+SW-3(config)#
+SW-3(config)#interface f0/24
+SW-3(config-if)#switchport mode access
+SW-3(config-if)#switchport access vlan 99
+SW-3(config-if)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan99, changed state to up
+
+SW-3(config-if)#exit
+SW-3(config)#
+SW-3>ena
+Password: 
+SW-3#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-3(config)#interface g0/1
+SW-3(config-if)#switchport mode trunk
+SW-3(config-if)#switchport nonegotiate
+SW-3(config-if)#switchport trunk native vlan 99
+SW-3(config-if)#switchport trunk allowed vlan 40,50,60,99
+SW-3(config-if)#exit
+SW-3(config)#
